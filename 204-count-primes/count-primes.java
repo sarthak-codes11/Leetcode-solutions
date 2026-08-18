@@ -1,18 +1,18 @@
 class Solution {
     public int countPrimes(int n) {
-        boolean[] notPrime = new boolean[n];
+        if (n <= 2) return 0;
+        boolean[] composite = new boolean[n];
         int count = 0;
-
-        for(int i = 2; i < n; i++) {
-            if(notPrime[i]==false) {
+        for (int i = 2; i < n; i++) {
+            if (!composite[i]) {
                 count++;
-
-                for(int j = i * 2; j < n; j += i) {
-                    notPrime[j] = true;
+                if ((long) i * i < n) {
+                    for (int j = i * i; j < n; j += i) {
+                        composite[j] = true;
+                    }
                 }
             }
         }
-
         return count;
     }
 }
