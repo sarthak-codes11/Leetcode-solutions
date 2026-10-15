@@ -1,19 +1,17 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
+        int[] lastSeen = new int[128]; // stores last index + 1 for each ASCII char (0 = not seen)
         int left = 0;
-        int maxLength = 0;
-        HashSet<Character> charSet = new HashSet<>();
+        int best = 0;
 
         for (int right = 0; right < s.length(); right++) {
-            while (charSet.contains(s.charAt(right))) {
-                charSet.remove(s.charAt(left));
-                left++;
-            }
-
-            charSet.add(s.charAt(right));
-            maxLength = Math.max(maxLength, right - left + 1);
+            char ch = s.charAt(right);
+            // If ch appeared inside the current window, move left past its previous occurrence
+            left = Math.max(left, lastSeen[ch]);
+            lastSeen[ch] = right + 1;
+            best = Math.max(best, right - left + 1);
         }
 
-        return maxLength;       
+        return best;
     }
 }
